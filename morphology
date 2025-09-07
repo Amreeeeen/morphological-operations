@@ -1,0 +1,30 @@
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Load image in grayscale
+img = cv2.imread('colour_image.png', 0)  # Replace with your image name
+_, binary = cv2.threshold(img, 127, 255, cv2.THRESH_BINARY)
+
+# Define structuring element (kernel)
+kernel = np.ones((7, 7), np.uint8)
+
+# Apply Dilation
+dilated = cv2.dilate(binary, kernel, iterations=2)
+
+# Apply Erosion
+eroded = cv2.erode(binary, kernel, iterations=1)
+
+# Plot all images side-by-side
+titles = ['Original', 'Binary', 'Dilated', 'Eroded']
+images = [img, binary, dilated, eroded]
+
+plt.figure(figsize=(10, 8))
+for i in range(4):
+    plt.subplot(2, 2, i+1)
+    plt.imshow(images[i], cmap='gray')
+    plt.title(titles[i])
+    plt.axis('off')
+
+plt.tight_layout()
+plt.show()
